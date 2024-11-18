@@ -13,10 +13,12 @@ export const Scan = () => {
 				setIsOpen={setIsDialogOpen}
 				setText={setText}
 			/>
-			<div className='my-5'>
-				<p className='text-sm'>Secret message:</p>
-				<p>{text}</p>
-			</div>
+			{text && (
+				<div className='my-5'>
+					<p className='text-sm'>Secret message:</p>
+					<p>{text}</p>
+				</div>
+			)}
 			<Button
 				onClick={() => setIsDialogOpen(true)}
 				className='w-full'

@@ -5,6 +5,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useState } from 'react';
 import { baseAxios } from '@/lib/axios';
+import { DialogTitle } from '@radix-ui/react-dialog';
 const DialogScan = ({
 	open,
 	setIsOpen,
@@ -16,13 +17,17 @@ const DialogScan = ({
 }) => {
 	const [scannedVal, setScannedVal] = useState('');
 	const handleShowMessage = async (scannedVal: string, password: string) => {
-		const response = await baseAxios.post('/api/scan', {
-			value: scannedVal.toString(),
-			password,
-		});
-		if (response.data) {
-			setText(response.data?.text);
-			setIsOpen(false);
+		try {
+			const response = await baseAxios.post('/api/scan', {
+				value: scannedVal.toString(),
+				password,
+			});
+			if (response.data) {
+				setText(response.data?.text);
+				setIsOpen(false);
+			}
+		} catch (err) {
+			console.error(err);
 		}
 	};
 	return (
@@ -31,6 +36,7 @@ const DialogScan = ({
 			onOpenChange={(isOpen) => setIsOpen(isOpen)}
 		>
 			<DialogContent className='flex flex-col items-center p-10 min-h-[50vh] md:min-h-[70vh]'>
+				<DialogTitle>QR Scanning</DialogTitle>
 				<Scanner
 					onError={(err) => console.error(err)}
 					allowMultiple
